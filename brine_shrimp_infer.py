@@ -1,9 +1,3 @@
-"""
-Brine Shrimp Detector and Counter - CNN Deep Learning Model
-Inference-only Pipeline for General Users
-Dr. Erik Duboue's Lab
-"""
-
 """ IMPORTS """
 # Import libraries
 import csv

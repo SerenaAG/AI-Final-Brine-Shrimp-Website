@@ -1,8 +1,3 @@
-"""
-Brine Shrimp Detector and Counter - Website Inference Utilities
-Single-image and batch-image inference helpers for the Flask website
-"""
-
 """ IMPORTS """
 import csv
 import uuid
