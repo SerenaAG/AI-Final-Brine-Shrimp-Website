@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Deep Learning Model: Brine Shrimp Detector and Counter</title>
+
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Basic responsive behavior -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* Minimal fallback styling in case CSS file is empty */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .instructions {
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .upload-box {
+            border: 2px dashed #007bff;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #fafcff;
+        }
+
+        input[type="file"] {
+            margin-top: 15px;
+        }
+
+        .button {
+            margin-top: 25px;
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .note {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 13px;
+            color: #777;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        AI Deep Learning Model:<br>
+        Brine Shrimp Detector and Counter
+    </h1>
+
+    <p class="subtitle">
+        Upload petri dish images to automatically detect and count the number of brine shrimp in each image.
+    </p>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="error">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="instructions">
+        <strong>Instructions:</strong>
+        <ul>
+            <li>Upload between <strong>1 and 10</strong> petri dish images at once</li>
+            <li>Supported formats: JPG, JPEG, PNG{% if heif_enabled %}, HEIC, HEIF{% endif %}</li>
+            <li>The system will detect and count brine shrimp in each image</li>
+            <li>You will receive segmented images and a CSV summary of counts</li>
+        </ul>
+    </div>
+
+    <form action="/predict" method="post" enctype="multipart/form-data" onsubmit="showLoading()">
+
+        <div class="upload-box">
+
+            <label for="images">
+                <strong>Select 1–10 images:</strong>
+            </label>
+
+            <br>
+
+            <input
+                type="file"
+                id="images"
+                name="images"
+                accept=".jpg,.jpeg,.png,.heic,.heif"
+                multiple
+                required
+            >
+
+            <p class="note">
+                Hold <strong>Ctrl</strong> (Windows) or <strong>Command</strong> (Mac) to select multiple files.
+            </p>
+
+        </div>
+
+        <div style="text-align: center;">
+            <button type="submit" class="button">
+                Detect and Count Brine Shrimp
+            </button>
+        </div>
+
+        <div id="loading" class="loading">
+            Processing images... This may take a few seconds.
+        </div>
+
+    </form>
+
+    <footer>
+        AI Brine Shrimp Counter • IDS 3932 Final Project<br>
+        By: Serena Amro Gazze and Hannah Epstein
+    </footer>
+
+</div>
+
+<script>
+function showLoading() {
+    document.getElementById("loading").style.display = "block";
+}
+</script>
+
+</body>
+</html>

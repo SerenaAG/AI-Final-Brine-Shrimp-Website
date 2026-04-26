@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brine Shrimp Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: white;
+            padding: 32px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+
+        .summary-box {
+            background-color: #f8fbff;
+            border: 1px solid #d9e9ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .summary-value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #111;
+            word-break: break-word;
+        }
+
+        .summary-value.batch-id {
+            font-size: 16px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 22px 0 8px 0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 18px;
+            font-size: 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .button.secondary {
+            background-color: #6c757d;
+        }
+
+        .button.secondary:hover {
+            background-color: #545b62;
+        }
+
+        .results-grid {
+            display: grid;
+            gap: 24px;
+            margin-top: 28px;
+        }
+
+        .result-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .result-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background-color: #fafafa;
+        }
+
+        .filename {
+            font-size: 18px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        .result-meta {
+            margin-top: 8px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .count-pill {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background-color: #e8f4ff;
+            color: #0b4f8a;
+            font-weight: bold;
+        }
+
+        .error-pill {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background-color: #ffeaea;
+            color: #9b1c1c;
+            font-weight: bold;
+        }
+
+        .result-body {
+            padding: 20px;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .image-panel {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 14px;
+            background-color: #fcfcfc;
+        }
+
+        .image-panel h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .image-panel img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            display: block;
+        }
+
+        .missing-image {
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #777;
+            background-color: #f3f4f6;
+            border: 1px dashed #ccc;
+            border-radius: 6px;
+            padding: 16px;
+        }
+
+        .error-box {
+            background-color: #fff5f5;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            border-radius: 8px;
+            padding: 14px;
+            margin-top: 16px;
+        }
+
+        .small-note {
+            margin-top: 20px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        footer {
+            margin-top: 36px;
+            text-align: center;
+            font-size: 13px;
+            color: #777;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                margin: 18px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Detection Results</h1>
+
+    <div class="summary-box">
+        <h2>Batch Summary</h2>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-label">Batch ID</div>
+                <div class="summary-value batch-id">{{ batch_id }}</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-label">Images Processed</div>
+                <div class="summary-value">{{ num_uploaded }}</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-label">Total Shrimp Detected</div>
+                <div class="summary-value">{{ total_count }}</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-label">Confidence Threshold</div>
+                <div class="summary-value">{{ confidence_threshold }}</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a class="button" href="{{ url_for('download_csv', csv_name=csv_name) }}">
+                Download CSV Summary
+            </a>
+
+            <a class="button secondary" href="{{ url_for('index') }}">
+                Upload More Images
+            </a>
+        </div>
+    </div>
+
+    <div class="results-grid">
+        {% for item in results %}
+        <div class="result-card">
+            <div class="result-header">
+                <div class="filename">{{ item.original_filename }}</div>
+
+                <div class="result-meta">
+                    {% if item.error %}
+                        This image could not be processed successfully.
+                    {% else %}
+                        Detection completed successfully.
+                    {% endif %}
+                </div>
+
+                {% if item.error %}
+                    <div class="error-pill">Processing Error</div>
+                {% else %}
+                    <div class="count-pill">Brine Shrimp Count: {{ item.count }}</div>
+                {% endif %}
+            </div>
+
+            <div class="result-body">
+                <div class="image-grid">
+                    <div class="image-panel">
+                        <h3>Uploaded Image</h3>
+
+                        {% if item.uploaded_image_name %}
+                            <img
+                                src="{{ url_for('uploaded_file', filename=item.uploaded_image_name) }}"
+                                alt="Uploaded image for {{ item.original_filename }}"
+                            >
+                        {% else %}
+                            <div class="missing-image">
+                                Uploaded image not available.
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="image-panel">
+                        <h3>Segmented Output</h3>
+
+                        {% if item.annotated_image_url %}
+                            <img
+                                src="{{ url_for('static', filename=item.annotated_image_url) }}"
+                                alt="Segmented output for {{ item.original_filename }}"
+                            >
+                        {% else %}
+                            <div class="missing-image">
+                                No segmented image available.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if item.error %}
+                    <div class="error-box">
+                        <strong>Error:</strong> {{ item.error }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="small-note">
+        Each uploaded image is processed individually. The total above reflects the sum of successful detections across this batch.
+    </div>
+
+    <footer>
+        Brine Shrimp Detection System • AI Final Project
+    </footer>
+</div>
+
+</body>
+</html>

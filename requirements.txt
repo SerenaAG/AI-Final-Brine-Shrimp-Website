@@ -1,0 +1,13 @@
+Flask==3.0.3
+gunicorn==22.0.0
+
+torch
+torchvision
+
+numpy
+opencv-python
+Pillow
+
+matplotlib
+scikit-learn
+tqdm
