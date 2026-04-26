@@ -17,7 +17,6 @@ from brine_shrimp_train_and_infer import (
     get_detector,
     IMG_SUFFIXES,
     is_image_ok,
-    HEIF_ENABLED,
 )
 
 """ CONFIGURATION """
