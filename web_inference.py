@@ -321,7 +321,6 @@ def process_uploaded_files(
         "csv_path": str(csv_path),
         "csv_name": csv_path.name,
         "confidence_threshold": conf_thresh,
-        "heif_enabled": HEIF_ENABLED,
     }
 
 
